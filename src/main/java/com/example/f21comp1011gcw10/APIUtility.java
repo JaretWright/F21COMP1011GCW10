@@ -49,10 +49,28 @@ public class APIUtility {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest httpRequest = HttpRequest.newBuilder().uri(URI.create(uri)).build();
 
-        HttpResponse<Path> response = client.send(httpRequest, HttpResponse
-                                                                .BodyHandlers
-                                                                .ofFile(Paths.get("jsonData.json")));
-        return getMoviesJsonFile();
+        //this sends the result from the API to a file
+//        HttpResponse<Path> response = client.send(httpRequest, HttpResponse
+//                                                                .BodyHandlers
+//                                                                .ofFile(Paths.get("jsonData.json")));
+//        return getMoviesJsonFile();
+
+        //this approach stores the API response to a String and then creates objects
+        HttpResponse<String> response = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+
+        String jsonString =response.body();
+
+        Gson gson = new Gson();
+        ApiResponse apiResponse = null;
+
+        try{
+            apiResponse  = gson.fromJson(jsonString, ApiResponse.class);
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return apiResponse;
     }
 
 }
