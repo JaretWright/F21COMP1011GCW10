@@ -7,4 +7,6 @@ module com.example.f21comp1011gcw10 {
 
     opens com.example.f21comp1011gcw10 to javafx.fxml, com.google.gson;
     exports com.example.f21comp1011gcw10;
+    exports com.example.f21comp1011gcw10.Controllers;
+    opens com.example.f21comp1011gcw10.Controllers to com.google.gson, javafx.fxml;
 }
