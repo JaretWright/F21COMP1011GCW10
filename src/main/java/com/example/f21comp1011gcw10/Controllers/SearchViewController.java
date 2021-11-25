@@ -3,6 +3,8 @@ package com.example.f21comp1011gcw10.Controllers;
 import com.example.f21comp1011gcw10.APIUtility;
 import com.example.f21comp1011gcw10.ApiResponse;
 import com.example.f21comp1011gcw10.Movie;
+import com.example.f21comp1011gcw10.SceneChanger;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -58,7 +60,7 @@ public class SearchViewController implements Initializable {
 
                         posterImageView.setImage(new Image(movieSelected.getPoster()));
                         setMovieFound(true,true);
-                        throw new Exception("invalid image");
+//                        throw new Exception("invalid image");
                     }catch(Exception e)
                     {
                         posterImageView.setImage(new Image("default poster.png"));
@@ -77,5 +79,12 @@ public class SearchViewController implements Initializable {
         posterImageView.setVisible(movieSelected);
         errMsgLabel.setVisible(!movieFound);
     }
+
+    @FXML
+    private void getMovieDetails(ActionEvent event) throws IOException, InterruptedException {
+        String movieId = initialMovieDataListView.getSelectionModel().getSelectedItem().getImdbID();
+        SceneChanger.changeScenes(event, "movie-details-view.fxml", movieId);
+    }
+
 
 }

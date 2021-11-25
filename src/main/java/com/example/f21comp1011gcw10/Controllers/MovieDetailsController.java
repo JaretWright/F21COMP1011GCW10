@@ -1,8 +1,7 @@
 package com.example.f21comp1011gcw10.Controllers;
 
-import com.example.f21comp1011gcw10.APIUtility;
-import com.example.f21comp1011gcw10.MovieDetails;
-import com.example.f21comp1011gcw10.Ratings;
+import com.example.f21comp1011gcw10.*;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -14,7 +13,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MovieDetailsController implements Initializable {
+public class MovieDetailsController implements Initializable, InitializeMovie {
 
     @FXML
     private Label movieTitleLabel;
@@ -45,13 +44,7 @@ public class MovieDetailsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        try {
-            loadMovieDetails("tt0075148");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
     }
 
     /**
@@ -60,8 +53,16 @@ public class MovieDetailsController implements Initializable {
      * details
      * @param movieID - this is the ImdbID
      */
-    public void loadMovieDetails(String movieID) throws IOException, InterruptedException {
-        MovieDetails movie = APIUtility.getMovieDetails(movieID);
+    public void loadMovieDetails(String movieID) {
+
+        MovieDetails movie = null;
+        try {
+            movie = APIUtility.getMovieDetails(movieID);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         movieTitleLabel.setText(movie.getTitle());
         releaseDateLabel.setText(movie.getReleaseDate());
         runTimeLabel.setText(movie.getRuntime());
@@ -76,6 +77,11 @@ public class MovieDetailsController implements Initializable {
         {
             imageView.setImage(new Image("defaultPoster.png"));
         }
+    }
+
+    @FXML
+    private void returnToSearch(ActionEvent event) throws IOException, InterruptedException {
+        SceneChanger.changeScenes(event,"search-view.fxml");
     }
 }
 
