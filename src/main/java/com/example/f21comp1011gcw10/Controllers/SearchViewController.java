@@ -55,13 +55,14 @@ public class SearchViewController implements Initializable {
         initialMovieDataListView.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldMovie, movieSelected) -> {
                     try{
+
                         posterImageView.setImage(new Image(movieSelected.getPoster()));
                         setMovieFound(true,true);
+                        throw new Exception("invalid image");
                     }catch(Exception e)
                     {
-                        //add a default poster in case the original did not load
+                        posterImageView.setImage(new Image("default poster.png"));
                     }
-
                 });
     }
 
