@@ -1,9 +1,6 @@
 package com.example.f21comp1011gcw10.Controllers;
 
-import com.example.f21comp1011gcw10.APIUtility;
-import com.example.f21comp1011gcw10.ApiResponse;
-import com.example.f21comp1011gcw10.Movie;
-import com.example.f21comp1011gcw10.SceneChanger;
+import com.example.f21comp1011gcw10.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -63,7 +60,7 @@ public class SearchViewController implements Initializable {
 //                        throw new Exception("invalid image");
                     }catch(Exception e)
                     {
-                        posterImageView.setImage(new Image("default poster.png"));
+                        posterImageView.setImage(new Image("images/defaultPoster.jpg"));
                     }
                 });
     }

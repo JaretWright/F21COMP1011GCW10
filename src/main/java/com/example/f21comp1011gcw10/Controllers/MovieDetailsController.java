@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MovieDetailsController implements Initializable, InitializeMovie {
+public class MovieDetailsController implements InitializeMovie {
 
     @FXML
     private Label movieTitleLabel;
@@ -42,10 +42,6 @@ public class MovieDetailsController implements Initializable, InitializeMovie {
     @FXML
     private ImageView imageView;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-    }
 
     /**
      * Given the movieID, this method will call the API/JSON and create a

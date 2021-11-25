@@ -15,6 +15,7 @@ public class SceneChanger {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(fxmlFile));
         Scene scene = new Scene(fxmlLoader.load());
 
+        //utilize the InitializeMovie interface to call the loadMovieDetails() method
         InitializeMovie controller = fxmlLoader.getController();
         controller.loadMovieDetails(movieID);
 
