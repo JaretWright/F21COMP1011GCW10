@@ -1,13 +1,11 @@
 package com.example.f21comp1011gcw10.Controllers;
 
 import com.example.f21comp1011gcw10.*;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -33,6 +31,9 @@ public class SearchViewController implements Initializable {
     private Button getDetailsButton;
 
     @FXML
+    private ProgressBar progressBar;
+
+    @FXML
     private void getSearchResults() throws IOException, InterruptedException {
         initialMovieDataListView.getItems().clear();
 
@@ -50,18 +51,55 @@ public class SearchViewController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setMovieFound(false, false);
         errMsgLabel.setVisible(false);
+        progressBar.setVisible(false);
 
         initialMovieDataListView.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldMovie, movieSelected) -> {
-                    try{
+                    progressBar.setVisible(true);
 
-                        posterImageView.setImage(new Image(movieSelected.getPoster()));
-                        setMovieFound(true,true);
-//                        throw new Exception("invalid image");
-                    }catch(Exception e)
-                    {
-                        posterImageView.setImage(new Image("images/defaultPoster.jpg"));
-                    }
+                    //create a new Thread to fetch the Poster art
+                    //This is calling the sleep method to simulate doing some slow running task
+                    Thread fetchPosterThread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            double progress = 0;
+                            for (int i=0; i<=10; i++)
+                            {
+                                //simulate the computer doing work
+                                try{
+                                    Thread.sleep(1000);
+                                }catch (InterruptedException e){
+                                    e.printStackTrace();
+                                }
+                                progress += 0.1;
+
+                                //create a final (non-changable) variable to pass in the progress
+                                //to the JavaFX thread
+                                final double reportedProgress = progress;
+
+                                //this is the JavaFX thread.  The method runLater() will execute
+                                //once the thread is available
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (reportedProgress > .9){
+                                            progressBar.setVisible(false);
+                                            try{
+                                                posterImageView.setImage(new Image(movieSelected.getPoster()));
+                                                setMovieFound(true,true);
+                                            }catch(Exception e)
+                                            {
+                                                posterImageView.setImage(new Image("images/defaultPoster.jpg"));
+                                            }
+                                        }
+                                        progressBar.setProgress(reportedProgress);
+                                    }
+                                });
+                            }
+
+                        }
+                    });
+                    fetchPosterThread.start();
                 });
     }
 

@@ -11,6 +11,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 
 public class APIUtility {
 
@@ -42,7 +43,11 @@ public class APIUtility {
      * This will call the OMDB api with the specified search term
      */
     public static ApiResponse getMoviesFromOMDB(String searchTerm) throws IOException, InterruptedException {
+        LocalDateTime start, responseTime, complete;
+
         searchTerm = searchTerm.trim().replace(" ", "%20");
+        start = LocalDateTime.now();
+        System.out.println("call getMoviesFromOMDB : " + start);
 
         String uri = "http://www.omdbapi.com/?apikey=4a1010ab&s="+searchTerm;
 
@@ -57,6 +62,8 @@ public class APIUtility {
 
         //this approach stores the API response to a String and then creates objects
         HttpResponse<String> response = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        responseTime = LocalDateTime.now();
+        System.out.println("API returned :" +responseTime);
 
         String jsonString =response.body();
 
@@ -69,7 +76,9 @@ public class APIUtility {
         {
             e.printStackTrace();
         }
-
+        complete = LocalDateTime.now();
+        System.out.println("JSON converted to objects " + complete);
+        System.out.println("total time = " + (complete.getSecond() - start.getSecond()));
         return apiResponse;
     }
 
